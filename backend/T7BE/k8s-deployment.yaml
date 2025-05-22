@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: t7be-deployment
+  labels:
+    app: t7be
+spec:
+  replicas: 2  # 初始副本数量，可以根据需要调整
+  selector:
+    matchLabels:
+      app: t7be
+  template:
+    metadata:
+      labels:
+        app: t7be
+    spec:
+      containers:
+      - name: t7be
+        image: yongchunl/t7be:latest  # 将被本地构建的镜像替换
+        imagePullPolicy: Always  # 修改为Always，确保总是拉取最新镜像
+        ports:
+        - containerPort: 8080
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "200m"
+          limits:
+            memory: "1Gi"
+            cpu: "500m"
+        env:
+        - name: JAVA_OPTS
+          value: "-Xms256m -Xmx512m"
+        livenessProbe:
+          httpGet:
+            path: /actuator/health/liveness
+            port: 8080
+          initialDelaySeconds: 120
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /actuator/health/readiness
+            port: 8080
+          initialDelaySeconds: 60
+          periodSeconds: 5
+        volumeMounts:
+        - name: tmp-volume
+          mountPath: /tmp
+      volumes:
+      - name: tmp-volume
+        emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: t7be-service
+spec:
+  selector:
+    app: t7be
+  ports:
+  - port: 80
+    targetPort: 8080
+  type: NodePort  # 可以根据需要改为LoadBalancer或ClusterIP 

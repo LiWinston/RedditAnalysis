@@ -1,0 +1,25 @@
+FROM python:3.11-slim-bookworm
+
+WORKDIR /app
+
+RUN apt update
+RUN apt install gcc python3-dev build-essential libev-dev libffi-dev bash python-is-python3 -y
+
+COPY requirements.txt /app
+RUN python -m pip install -U pip
+RUN python -m pip install wheel setuptools
+RUN python -m pip install -r requirements.txt
+
+RUN python -m pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
+RUN python -m pip install sentence_transformers --extra-index-url https://download.pytorch.org/whl/cpu
+
+COPY requirements_sentence_transformer.txt /app
+RUN python -m pip install -r requirements_sentence_transformer.txt
+
+COPY *.py /app/
+
+RUN python ./download_models.py
+
+ENV PYTHONUNBUFFERED 1
+ENTRYPOINT ["python3"]
+CMD ["server.py"]

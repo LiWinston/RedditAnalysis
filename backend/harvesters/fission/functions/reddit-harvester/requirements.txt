@@ -1,0 +1,10 @@
+# -- Nemo: all of these are installed in the env image
+# requests
+# praw
+# tqdm
+# numpy
+# pandas
+# textblob
+# nltk
+# elasticsearch==9.0.1
+# sentence_transformers # installed in build.sh

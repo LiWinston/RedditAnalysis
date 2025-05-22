@@ -1,0 +1,59 @@
+
+# Python编译文件
+__pycache__/
+*.py[cod]
+*$py.class
+
+# 虚拟环境
+venv/
+env/
+ENV/
+.env
+
+# 分发/打包
+dist/
+build/
+*.egg-info/
+
+# IDE相关文件
+.idea/
+.vscode/
+*.swp
+.DS_Store
+/.cursor
+
+# 日志和临时文件
+*.log
+logs/
+tmp/
+temp/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# ElasticSearch数据
+elasticsearch-data/
+
+# Kubernetes
+kubeconfig
+*.kubeconfig
+
+# 敏感文件
+*.pem
+*.key
+api_keys.json
+credentials.*
+
+# 数据文件
+data/large_files/
+*.json
+
+# Docker
+.docker/
+docker-compose.override.yml
+
+# 本地配置
+config.local.yaml
+/backend/Docs
+/backend/harvesters/fission/data_collected_by_script
+frontend/ipynb中的代码.md
